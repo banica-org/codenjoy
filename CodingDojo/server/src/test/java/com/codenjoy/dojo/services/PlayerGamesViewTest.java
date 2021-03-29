@@ -92,7 +92,7 @@ public class PlayerGamesViewTest {
                         "'user4':{'additionalData':['data3, data4'],'coordinate':{'x':7,'y':8},'level':13,'multiplayer':false}" +
                     "}," +
                     "'group':['user1','user2','user3','user4']," +
-                    "'readableNames':{'user1':'readable_user1','user2':'readable_user2','user3':'readable_user3','user4':'readable_user4'}" +
+                    "'githubUsernames':{'user1':'readable_user1','user2':'readable_user2','user3':'readable_user3','user4':'readable_user4'}" +
                 "},'scores':{'user1':123,'user2':234,'user3':345,'user4':456}}";
 
         assertEquals(expectedGroup, toString(dataMap.get("user1")));
@@ -124,7 +124,7 @@ public class PlayerGamesViewTest {
                         "'user2':{'additionalData':'data2','coordinate':{'x':3,'y':4},'level':11,'multiplayer':false}" +
                     "}," +
                     "'group':['user1','user2']," +
-                    "'readableNames':{'user1':'readable_user1','user2':'readable_user2'}" +
+                    "'githubUsernames':{'user1':'readable_user1','user2':'readable_user2'}" +
                 "},'scores':{'user1':123,'user2':234}}";
 
         assertEquals(expectedGroup1, toString(dataMap.get("user1")));
@@ -137,7 +137,7 @@ public class PlayerGamesViewTest {
                         "'user4':{'additionalData':['data3, data4'],'coordinate':{'x':7,'y':8},'level':13,'multiplayer':false}" +
                     "}," +
                     "'group':['user3','user4']," +
-                    "'readableNames':{'user3':'readable_user3','user4':'readable_user4'}" +
+                    "'githubUsernames':{'user3':'readable_user3','user4':'readable_user4'}" +
                 "},'scores':{'user3':345,'user4':456}}";
 
         assertEquals(expectedGroup2, toString(dataMap.get("user3")));
@@ -372,7 +372,7 @@ public class PlayerGamesViewTest {
                         "'user1':{'additionalData':'data1','coordinate':{'x':1,'y':2},'level':10,'multiplayer':false}" +
                     "}," +
                     "'group':['user1']," +
-                    "'readableNames':{'user1':'readable_user1'}" +
+                    "'githubUsernames':{'user1':'readable_user1'}" +
                 "},'scores':{'user1':123}}";
 
         assertEquals(expectedGroup1, toString(dataMap.get("user1")));
@@ -383,7 +383,7 @@ public class PlayerGamesViewTest {
                         "'user2':{'additionalData':'data2','coordinate':{'x':3,'y':4},'level':11,'multiplayer':false}" +
                     "}," +
                     "'group':['user2']," +
-                    "'readableNames':{'user2':'readable_user2'}" +
+                    "'githubUsernames':{'user2':'readable_user2'}" +
                 "},'scores':{'user2':234}}";
 
         assertEquals(expectedGroup2, toString(dataMap.get("user2")));
@@ -394,7 +394,7 @@ public class PlayerGamesViewTest {
                         "'user3':{'additionalData':{'key':'value'},'coordinate':{'x':5,'y':6},'level':12,'multiplayer':false}" +
                     "}," +
                     "'group':['user3']," +
-                    "'readableNames':{'user3':'readable_user3'}" +
+                    "'githubUsernames':{'user3':'readable_user3'}" +
                 "},'scores':{'user3':345}}";
 
         assertEquals(expectedGroup3, toString(dataMap.get("user3")));
@@ -405,19 +405,19 @@ public class PlayerGamesViewTest {
                         "'user4':{'additionalData':['data3, data4'],'coordinate':{'x':7,'y':8},'level':13,'multiplayer':false}" +
                     "}," +
                     "'group':['user4']," +
-                    "'readableNames':{'user4':'readable_user4'}" +
+                    "'githubUsernames':{'user4':'readable_user4'}" +
                 "},'scores':{'user4':456}}";
 
         assertEquals(expectedGroup4, toString(dataMap.get("user4")));
     }
 
     @Test
-    public void testGetReadableNames() {
+    public void testGetGitHubUsernames() {
         // given
         givenUsersInSameGroup();
 
         // when
-        Map<String, String> names = playerGamesView.getReadableNames();
+        Map<String, String> names = playerGamesView.getGithubUsernames();
 
         // then
         assertEquals("{user1=readable_user1, user2=readable_user2, " +
@@ -470,7 +470,7 @@ public class PlayerGamesViewTest {
         String name = getNextName();
         Player player = new Player(name, "http://" + name + ".com:8080", gameType, gameScore, null);
         player.setEventListener(mock(InformationCollector.class));
-        player.setReadableName("readable_" + name);
+        player.setGithubUsername("readable_" + name);
         players.add(player);
 
         Controller controller = mock(Controller.class);

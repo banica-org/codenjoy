@@ -32,9 +32,9 @@ import lombok.NoArgsConstructor;
 public class PlayerInfo {
 
     private String gameType;
-    private String callbackUrl;
+    private String repositoryUrl;
     private String id;
-    private String readableName;
+    private String githubUsername;
     private String score;
     private String code;
     private boolean winner;
@@ -48,9 +48,9 @@ public class PlayerInfo {
     public String toString() {
         return "PlayerInfo{" +
                 "gameType='" + gameType + '\'' +
-                ", callbackUrl='" + callbackUrl + '\'' +
+                ", repositoryUrl='" + repositoryUrl + '\'' +
                 ", id='" + id + '\'' +
-                ", readableName='" + readableName + '\'' +
+                ", githubUsername='" + githubUsername + '\'' +
                 ", score='" + score + '\'' +
                 ", code='" + code + '\'' +
                 '}';

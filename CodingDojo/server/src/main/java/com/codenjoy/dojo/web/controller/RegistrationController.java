@@ -60,7 +60,7 @@ public class RegistrationController {
     public String register(HttpServletRequest request, Model model,
                            @RequestParam(name = "id", required = false) String id,
                            @RequestParam(name = "email", required = false) String email,
-                           @RequestParam(name = "readableName", required = false) String name) {
+                           @RequestParam(name = "githubUsername", required = false) String name) {
         return registrationService.openRegistrationForm(request, model, id, email, name, false);
     }
 
@@ -68,7 +68,7 @@ public class RegistrationController {
     public String registerAdmin(HttpServletRequest request, Model model,
                                 @RequestParam(name = "id", required = false) String id,
                                 @RequestParam(name = "email", required = false) String email,
-                                @RequestParam(name = "readableName", required = false) String name) {
+                                @RequestParam(name = "githubUsername", required = false) String name) {
         return registrationService.openRegistrationForm(request, model, id, email, name, true);
     }
 
@@ -83,7 +83,7 @@ public class RegistrationController {
         if (result.hasErrors()) {
             populateCommonRegistrationModel(model, false);
             player.dropPassword();
-            return registrationService.openRegistrationForm(request, model, null, player.getEmail(), player.getReadableName());
+            return registrationService.openRegistrationForm(request, model, null, player.getEmail(), player.getGithubUsername());
         }
 
         String game = rooms.getGameName(player.getGame());

@@ -455,10 +455,10 @@
                         <c:choose>
                             <c:when test="${player.active}">
                                 <td><form:input class="input-id" readonly="true" index="${status.index}" path="players[${status.index}].id"/></td>
-                                <td><form:input class="input-readable" path="players[${status.index}].readableName"/></td>
+                                <td><form:input class="input-readable" path="players[${status.index}].githubUsername"/></td>
                                 <td><form:input class="input-room" path="players[${status.index}].room"/></td>
                                 <td><form:input class="input-score" path="players[${status.index}].score"/></td>
-                                <td><form:input class="input-callback" path="players[${status.index}].callbackUrl"/></td>
+                                <td><form:input class="input-callback" path="players[${status.index}].repositoryUrl"/></td>
                                 <c:choose>
                                     <c:when test="${player.code != null}">
                                         <td class="joystick">
@@ -529,10 +529,10 @@
 
                             <c:otherwise>
                                 <td><input type="text" readonly="true" class="input-id"       value="${player.id}"/></td>
-                                <td><input type="text" readonly="true" class="input-readable" value="${player.readableName}"/></td>
+                                <td><input type="text" readonly="true" class="input-readable" value="${player.githubUsername}"/></td>
                                 <td><input type="text" readonly="true" class="input-room" value="${player.room}"/></td>
                                 <td><input type="text" readonly="true" class="input-score"    value="${player.score}"/></td>
-                                <td><input type="text" readonly="true" class="input-callback" value="${player.callbackUrl}"/></td>
+                                <td><input type="text" readonly="true" class="input-callback" value="${player.repositoryUrl}"/></td>
                                 <td>UDLRA</td>
                                 <td><a href="${ctx}/board/game/${player.game}">${player.game}</a></td>
                                 <td>Save</td>

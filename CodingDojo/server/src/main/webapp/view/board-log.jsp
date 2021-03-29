@@ -56,7 +56,7 @@
     <script src="${ctx}/resources/js/all.js"></script>
 </head>
 <body style="display:none;">
-    <div id="settings" page="${page}" contextPath="${ctx}" game="${game}" room="${room}" playerId="${playerId}" readableName="${readableName}"></div>
+    <div id="settings" page="${page}" contextPath="${ctx}" game="${game}" room="${room}" playerId="${playerId}" githubUsername="${githubUsername}"></div>
 
     <div id="board_page">
         <%@include file="canvases.jsp"%>

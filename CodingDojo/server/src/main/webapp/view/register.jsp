@@ -83,9 +83,9 @@ License along with this program.  If not, see
                     </div>
                 </c:if>
                 <c:if test="${opened}">
-                    <div id="readableName" class="field not-valid" not-empty>
-                        <form:errors path="readableName" cssClass="error-message" />
-                        <form:input type="text" placeholder="FirstName LastName" path="readableName"/>
+                    <div id="githubUsername" class="field not-valid" not-empty>
+                        <form:errors path="githubUsername" cssClass="error-message" />
+                        <form:input type="text" placeholder="GitHub username" path="githubUsername"/>
                         <span class="icon fa"></span>
                     </div>
                     <div id="email" class="field not-valid">

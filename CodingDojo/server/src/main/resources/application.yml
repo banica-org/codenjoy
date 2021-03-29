@@ -25,7 +25,7 @@ game:
   save:
     auto: true
     load-on-start: true
-  ai: true
+  ai: false
   player:
     score:
       cleanup: false
@@ -44,7 +44,7 @@ board.save.ticks: 1
 registration:
   opened: true
   nickname:
-    allowed: false
+    allowed: true
   password:
     min-length: 8
     autogen-length: 8
@@ -90,3 +90,7 @@ logging:
       eclipse.jetty: info
       springframework.mvc: info
       reflections: error
+github:
+  host:
+    name: localhost
+    port: 8081

@@ -61,19 +61,19 @@ public class RegistrationValidator implements Validator {
         }
 
         if (!playerService.isRegistrationOpened()) {
-            errors.rejectValue("readableName", "registration.closed");
+            errors.rejectValue("githubUsername", "registration.closed");
         }
 
         Player player = (Player) target;
 
-        String name = player.getReadableName();
+        String name = player.getGithubUsername();
 
         if (!validateNicknameStructure(name)) {
-            errors.rejectValue("readableName", "registration.nickname.invalid", new Object[]{ name }, null);
+            errors.rejectValue("githubUsername", "registration.nickname.invalid", new Object[]{ name }, null);
         }
 
         if (!checkNameUniqueness(name)) {
-            errors.rejectValue("readableName", "registration.nickname.alreadyUsed", new Object[]{ name }, null);
+            errors.rejectValue("githubUsername", "registration.nickname.alreadyUsed", new Object[]{ name }, null);
         }
 
         String email = player.getEmail();
@@ -133,10 +133,11 @@ public class RegistrationValidator implements Validator {
     }
 
     private boolean validateNicknameStructure(String name) {
-        if (nicknameAllowed) {
-            return validator.isNickName(name);
-        } else {
-            return validator.isReadableName(name);
-        }
+        return validator.isNickName(name);
+//        if (nicknameAllowed) {
+//            return validator.isNickName(name);
+//        } else {
+//            return validator.isGitHubUsername(name);
+//        }
     }
 }

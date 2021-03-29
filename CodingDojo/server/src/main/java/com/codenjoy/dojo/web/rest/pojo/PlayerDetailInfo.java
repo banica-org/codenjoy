@@ -40,8 +40,8 @@ import java.util.List;
 public class PlayerDetailInfo {
 
     private String id;
-    private String readableName;
-    private String callbackUrl;
+    private String githubUsername;
+    private String repositoryUrl;
     private String game;
     private String room;
     private PMuptiplayerType multiplayer;
@@ -60,7 +60,7 @@ public class PlayerDetailInfo {
         this.room = room;
         multiplayer = new PMuptiplayerType(type.getMultiplayerType(type.getSettings()));
 
-        callbackUrl = player.getCallbackUrl();
+        repositoryUrl = player.getRepositoryUrl();
         score = String.valueOf(player.getScore());
         id = player.getId();
 
@@ -76,6 +76,6 @@ public class PlayerDetailInfo {
         if (StringUtils.isEmpty(room)) { // TODO test me
             room = game;
         }
-        return new PlayerSave(id, callbackUrl, game, room, Integer.valueOf(score), save);
+        return new PlayerSave(id, repositoryUrl, game, room, Integer.valueOf(score), save);
     }
 }

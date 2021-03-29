@@ -288,7 +288,7 @@ public class PlayerServiceImplTest {
         assertEquals(VASYA, player.getId());
         assertNull(player.getPassword());
         assertNull(player.getCode());
-        assertEquals(VASYA_URL, player.getCallbackUrl());
+        assertEquals(VASYA_URL, player.getRepositoryUrl());
         assertSame(gameType, player.getGameType());
         assertNull(player.getMessage());
         assertEquals(0, player.getScore());
@@ -429,7 +429,7 @@ public class PlayerServiceImplTest {
                     "HeroesData:'{" +
                         "'coordinates':{'petya':{'coordinate':{'x':3,'y':4},'level':0,'multiplayer':false}}," +
                         "'group':['petya']," +
-                        "'readableNames':{'petya':'readable_petya'}" +
+                        "'githubUsernames':{'petya':'readable_petya'}" +
                         "}', " +
                     "LastChatMessage:106558567], " +
                 "vasya=PlayerData[" +
@@ -439,7 +439,7 @@ public class PlayerServiceImplTest {
                     "HeroesData:'{" +
                         "'coordinates':{'vasya':{'coordinate':{'x':1,'y':2},'level':0,'multiplayer':false}}," +
                         "'group':['vasya']," +
-                        "'readableNames':{'vasya':'readable_vasya'}" +
+                        "'githubUsernames':{'vasya':'readable_vasya'}" +
                         "}', " +
                     "LastChatMessage:111979568]}",
                 data.toString().replaceAll("\"", "'"));
@@ -542,7 +542,7 @@ public class PlayerServiceImplTest {
 
     private Player createPlayer(String id, String game, String room) {
         Player player = playerService.register(id, game, room,
-                getCallbackUrl(id));
+                getRepositoryUrl(id));
         players.add(player);
         chatIds.put(room, Math.abs(id.hashCode()));
 
@@ -553,7 +553,7 @@ public class PlayerServiceImplTest {
         return player;
     }
 
-    private String getCallbackUrl(String id) {
+    private String getRepositoryUrl(String id) {
         return "http://" + id + ":1234";
     }
 
@@ -581,14 +581,14 @@ public class PlayerServiceImplTest {
         assertEquals(hostUrls.length, playerCaptor.getAllValues().size());
         for (int i = 0; i < hostUrls.length; i++) {
             String hostUrl = hostUrls[i];
-            assertEquals(hostUrl, playerCaptor.getAllValues().get(i).getCallbackUrl());
+            assertEquals(hostUrl, playerCaptor.getAllValues().get(i).getRepositoryUrl());
         }
     }
 
     @Test
     public void shouldCreatePlayerFromSavedPlayerGame_whenPlayerNotRegisterYet() {
         // given
-        PlayerSave save = new PlayerSave(VASYA, getCallbackUrl(VASYA), "game", "room", 100, null);
+        PlayerSave save = new PlayerSave(VASYA, getRepositoryUrl(VASYA), "game", "room", 100, null);
 
         // when
         playerService.register(save);
@@ -608,9 +608,9 @@ public class PlayerServiceImplTest {
     public void shouldUpdatePlayerFromSavedPlayerGame_whenPlayerAlreadyRegistered_whenOtherGameType() {
         // given
         Player registeredPlayer = createPlayer(VASYA);
-        assertEquals(VASYA_URL, registeredPlayer.getCallbackUrl());
+        assertEquals(VASYA_URL, registeredPlayer.getRepositoryUrl());
 
-        PlayerSave save = new PlayerSave(VASYA, getCallbackUrl(VASYA), "other_game", "other_room", 200, null);
+        PlayerSave save = new PlayerSave(VASYA, getRepositoryUrl(VASYA), "other_game", "other_room", 200, null);
 
         // when
         playerService.register(save);
@@ -630,10 +630,10 @@ public class PlayerServiceImplTest {
     public void shouldNotUpdatePlayerFromSavedPlayerGame_whenPlayerAlreadyRegistered_whenSameGameType() {
         // given
         Player registeredPlayer = createPlayer(VASYA);
-        assertEquals(VASYA_URL, registeredPlayer.getCallbackUrl());
+        assertEquals(VASYA_URL, registeredPlayer.getRepositoryUrl());
         assertEquals(0, registeredPlayer.getScore());
 
-        PlayerSave save = new PlayerSave(VASYA, getCallbackUrl(VASYA), "game", "room", 200, null);
+        PlayerSave save = new PlayerSave(VASYA, getRepositoryUrl(VASYA), "game", "room", 200, null);
 
         // when
         playerService.register(save);
@@ -654,7 +654,7 @@ public class PlayerServiceImplTest {
         assertEquals(VASYA, player.getId());
         assertEquals(null, player.getPassword());
         assertEquals(null, player.getCode());
-        assertEquals(VASYA_URL, player.getCallbackUrl());
+        assertEquals(VASYA_URL, player.getRepositoryUrl());
     }
 
     private void assertPetya(Player player) {
@@ -662,7 +662,7 @@ public class PlayerServiceImplTest {
         assertEquals(PETYA, player.getId());
         assertEquals(null, player.getPassword());
         assertNull(player.getCode());
-        assertEquals(PETYA_URL, player.getCallbackUrl());
+        assertEquals(PETYA_URL, player.getRepositoryUrl());
     }
 
     @Test
@@ -1335,13 +1335,13 @@ public class PlayerServiceImplTest {
         assertEquals("[new-vasya, new-petya]", all.toString());
 
         Player player1 = all.get(0);
-        assertEquals("new-url1", player1.getCallbackUrl());
+        assertEquals("new-url1", player1.getRepositoryUrl());
         assertNull(player1.getCode());
         assertEquals("game", player1.getGame());
         assertEquals(null, player1.getPassword());
 
         Player player2 = all.get(1);
-        assertEquals("new-url2", player2.getCallbackUrl());
+        assertEquals("new-url2", player2.getRepositoryUrl());
         assertNull(player2.getCode());
         assertEquals("game", player1.getGame());
         assertEquals(null, player2.getPassword());
@@ -1391,12 +1391,12 @@ public class PlayerServiceImplTest {
         assertEquals("[vasya, petya]", all.toString());
 
         Player player1 = all.get(0);
-        assertEquals(VASYA_URL, player1.getCallbackUrl());
+        assertEquals(VASYA_URL, player1.getRepositoryUrl());
         assertNull(player1.getCode());
         assertEquals(null, player1.getPassword());
 
         Player player2 = all.get(1);
-        assertEquals(PETYA_URL, player2.getCallbackUrl());
+        assertEquals(PETYA_URL, player2.getRepositoryUrl());
         assertNull(player2.getCode());
         assertEquals(null, player2.getPassword());
     }
@@ -1552,7 +1552,7 @@ public class PlayerServiceImplTest {
         // given
         when(gameType.getAI()).thenReturn((Class)AISolverStub.class);
         when(gameType.getBoard()).thenReturn((Class)BoardStub.class);
-        PlayerSave save = new PlayerSave(VASYA_AI, getCallbackUrl(VASYA_AI), "game", "room", 100, null);
+        PlayerSave save = new PlayerSave(VASYA_AI, getRepositoryUrl(VASYA_AI), "game", "room", 100, null);
 
         // when
         playerService.register(save);

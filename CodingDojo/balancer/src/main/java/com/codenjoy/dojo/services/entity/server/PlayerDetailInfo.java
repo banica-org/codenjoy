@@ -34,8 +34,8 @@ import lombok.Setter;
 public class PlayerDetailInfo {
 
     private String id;
-    private String readableName;
-    private String callbackUrl;
+    private String githubUsername;
+    private String repositoryUrl;
     private String gameType;
     private String roomName;
     private String score;
@@ -46,8 +46,8 @@ public class PlayerDetailInfo {
     public String toString() {
         return "PlayerDetailInfo{" +
                 "id='" + id + '\'' +
-                ", readableName='" + readableName + '\'' +
-                ", callbackUrl='" + callbackUrl + '\'' +
+                ", githubUsername='" + githubUsername + '\'' +
+                ", repositoryUrl='" + repositoryUrl + '\'' +
                 ", gameType='" + gameType + '\'' +
                 ", score='" + score + '\'' +
                 ", save='" + save + '\'' +

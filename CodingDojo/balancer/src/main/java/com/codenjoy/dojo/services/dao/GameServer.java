@@ -63,7 +63,7 @@ public class GameServer {
 
     public String createNewPlayer(String server, String id, String code,
                                   String email, String phone, String name,
-                                  String hashedPassword, String callbackUrl,
+                                  String hashedPassword, String repositoryUrl,
                                   String score, String save)
     {
         try {
@@ -75,7 +75,7 @@ public class GameServer {
             PlayerDetailInfo player = new PlayerDetailInfo(
                 id,
                 name,
-                callbackUrl,
+                repositoryUrl,
                 config.getGame().getType(),
                 config.getGame().getType(),
                 score,

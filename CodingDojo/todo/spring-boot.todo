@@ -376,7 +376,7 @@ https://github.com/codenjoyme/codenjoy/pull/46/commits/8b7d826bea6cbc6251eafa211
 https://github.com/codenjoyme/codenjoy/pull/46/commits/cc373402aebae1eb8744db405a012163cde249c4
     Не совсем понял что тут делается, в коммите написано что пофиксил тест, а по факту - зачем не совсем понятно. С виду стало сложнее
         if (initAdminUser) {
-            initialScripts.add("INSERT INTO users (id, email, readable_name, email_approved, password, code, data, roles)" +
+            initialScripts.add("INSERT INTO users (id, email, github_username, email_approved, password, code, data, roles)" +
                     " select '" + ADMIN_USER_ID + "', 'admin@codenjoyme.com', 'admin', 1,  '" + adminPassword + "', '" + ADMIN_USER_CODE + "', '{}', 'ROLE_ADMIN, ROLE_USER'" +
                     " where not exists (select 1 from users where id = '" + ADMIN_USER_ID + "')");
         }

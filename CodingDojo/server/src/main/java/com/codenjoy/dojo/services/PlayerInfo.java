@@ -36,11 +36,11 @@ public class PlayerInfo extends Player {
     private boolean hidden;
     private boolean aiPlayer;
 
-    private PlayerInfo(String id, String readableName, String code, String url, String room, String game, Object scoreValue, boolean saved) {
+    private PlayerInfo(String id, String githubUsername, String code, String url, String room, String game, Object scoreValue, boolean saved) {
         setId(id);
-        setReadableName(readableName);
+        setGithubUsername(githubUsername);
         setCode(code);
-        setCallbackUrl(url);
+        setRepositoryUrl(url);
         setGame(game);
         setRoom(room);
         setScore(scoreValue);
@@ -50,25 +50,25 @@ public class PlayerInfo extends Player {
     }
 
     public PlayerInfo(Player player) {
-        this(player.getId(), player.getCode(), player.getCallbackUrl(), player.getGame());
+        this(player.getId(), player.getCode(), player.getRepositoryUrl(), player.getGame());
         aiPlayer = player.hasAi();
         setScore(player.getScore());
         setRoom(player.getRoom());
-        setReadableName(player.getReadableName());
+        setGithubUsername(player.getGithubUsername());
     }
 
     public PlayerInfo(String id, String code, String url, String game) {
         setId(id);
         setCode(code);
-        setCallbackUrl(url);
+        setRepositoryUrl(url);
         setGame(game);
         saved = false;
         active = true;
     }
 
-    public PlayerInfo(PlayerSave save, String readableName, String code) {
-        this(save.getId(), readableName, code,
-                save.getCallbackUrl(), save.getRoom(),
+    public PlayerInfo(PlayerSave save, String githubUsername, String code) {
+        this(save.getId(), githubUsername, code,
+                save.getRepositoryUrl(), save.getRoom(),
                 save.getGame(), save.getScore(), true);
     }
 

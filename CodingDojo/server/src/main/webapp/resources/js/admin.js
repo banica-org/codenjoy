@@ -153,11 +153,11 @@ pages.admin = function() {
                 });
             };
 
-            setup('readableName');
+            setup('githubUsername');
             setup(PLAYER_ID);
             setup('room');
             setup('score');
-            setup('callbackUrl');
+            setup('repositoryUrl');
             setup('data');
         });
     }

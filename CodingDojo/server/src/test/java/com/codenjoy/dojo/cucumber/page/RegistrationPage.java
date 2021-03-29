@@ -42,7 +42,7 @@ import static org.junit.Assert.assertEquals;
 public class RegistrationPage {
 
     public static final String SUBMIT_BUTTON = "#submit-button";
-    public static final String READABLE_NAME_INPUT = "#readableName input";
+    public static final String READABLE_NAME_INPUT = "#githubUsername input";
     public static final String PASSWORD_INPUT = "#password input";
     public static final String EMAIL_INPUT = "#email input";
     public static final String PASSWORD_CONFIRMATION_INPUT = "#passwordConfirmation input";

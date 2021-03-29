@@ -29,17 +29,17 @@ import lombok.Getter;
 public class PlayerInfo {
     
     private String gameType;
-    private String callbackUrl;
+    private String repositoryUrl;
     private String id;
-    private String readableName;
+    private String githubUsername;
     private String score;
     private String code;
 
     public PlayerInfo(Player player) {
         gameType = player.getGameType().name();
-        callbackUrl = player.getCallbackUrl();
+        repositoryUrl = player.getRepositoryUrl();
         id = player.getId();
-        readableName = player.getNotNullReadableName();
+        githubUsername = player.getNotNullGitHubUsername();
         score = String.valueOf(player.getScore());
         code = player.getCode();
     }

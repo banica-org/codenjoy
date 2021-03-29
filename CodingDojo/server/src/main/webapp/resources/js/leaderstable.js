@@ -40,12 +40,12 @@ function initLeadersTable(contextPath, playerId, code, onDrawItem, onParseValue)
         return result;
     }
 
-    function getReadableNames(data) {
+    function getGithubUsernames(data) {
         var result = {};
         var players = Object.keys(data);
         for (var index in players) {
             var player = players[index];
-            var names = data[player].heroesData.readableNames;
+            var names = data[player].heroesData.githubUsernames;
             var namesPlayers = Object.keys(names);
             for (var index2 in namesPlayers) {
                 var player2 = namesPlayers[index2];
@@ -85,7 +85,7 @@ function initLeadersTable(contextPath, playerId, code, onDrawItem, onParseValue)
             return;
         }
         var scores = getAllValues(data);
-        var readableNames = getReadableNames(data);
+        var githubUsernames = getGithubUsernames(data);
         if (scores == null) {
             $("#table-logs-body").empty();
             return;
@@ -106,11 +106,11 @@ function initLeadersTable(contextPath, playerId, code, onDrawItem, onParseValue)
         var tbody = '';
         var count = 0;
         $.each(scores, function (email, score) {
-            var name = readableNames[email];
+            var name = githubUsernames[email];
 
             var you = '';
             if (!!playerId) {
-                you = (name == readableNames[playerId])?"*":"";
+                you = (name == githubUsernames[playerId])?"*":"";
             }
 
             count++;

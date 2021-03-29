@@ -45,10 +45,10 @@ public class Player implements ScreenRecipient, Closeable {
 
     private String id;
     private String email;
-    private String readableName;
+    private String githubUsername;
     private String code;
     private String data;
-    private String callbackUrl;
+    private String repositoryUrl;
     private String game;
     private String room;
     private String password;
@@ -64,9 +64,9 @@ public class Player implements ScreenRecipient, Closeable {
         this.id = id;
     }
 
-    public Player(String id, String callbackUrl, GameType gameType, PlayerScores scores, Information info) {
+    public Player(String id, String repositoryUrl, GameType gameType, PlayerScores scores, Information info) {
         this.id = id;
-        this.callbackUrl = callbackUrl;
+        this.repositoryUrl = repositoryUrl;
         this.gameType = gameType;
         this.scores = scores;
         this.info = info;
@@ -101,8 +101,8 @@ public class Player implements ScreenRecipient, Closeable {
         return (id + code).hashCode();
     }
     
-    public String getNotNullReadableName() {
-        return StringUtils.isEmpty(readableName) ? id : readableName;
+    public String getNotNullGitHubUsername() {
+        return StringUtils.isEmpty(githubUsername) ? id : githubUsername;
     }
 
     public int clearScore() {

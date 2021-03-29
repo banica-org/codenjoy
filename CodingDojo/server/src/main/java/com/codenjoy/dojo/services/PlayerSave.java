@@ -34,7 +34,7 @@ public class PlayerSave {
     public static final PlayerSave NULL = new PlayerSave(StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, 0, StringUtils.EMPTY);
 
     private String id;
-    private String callbackUrl;
+    private String repositoryUrl;
     private String room;
     private String game;
     private Object score;
@@ -44,11 +44,11 @@ public class PlayerSave {
         this.save = save;
     }
 
-    public PlayerSave(String id, String callbackUrl, String game, String room, Object score, String save) {
+    public PlayerSave(String id, String repositoryUrl, String game, String room, Object score, String save) {
         this.id = id;
         this.game = game;
         this.room = room;
-        this.callbackUrl = callbackUrl;
+        this.repositoryUrl = repositoryUrl;
         this.score = score;
         this.save = save;
     }
@@ -56,7 +56,7 @@ public class PlayerSave {
     public PlayerSave(Player save) {
         this.id = save.getId();
         this.game = save.getGame();
-        this.callbackUrl = save.getCallbackUrl();
+        this.repositoryUrl = save.getRepositoryUrl();
         this.score = save.getScore();
         this.save = save.getData();
     }

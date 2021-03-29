@@ -635,59 +635,59 @@ public class ValidatorTest {
 
     @Test
     public void validateIsReadablePlayerName() {
-        assertTrue(validator.isReadableName("Стивен Пупкин"));
+        assertTrue(validator.isGitHubUsername("Стивен Пупкин"));
 
-        assertTrue(validator.isReadableName("Oleksandr Baglay"));
+        assertTrue(validator.isGitHubUsername("Oleksandr Baglay"));
 
-        assertTrue(validator.isReadableName("Stiven Pupkin"));
+        assertTrue(validator.isGitHubUsername("Stiven Pupkin"));
 
-        assertTrue(validator.isReadableName("стивен пупкин"));
+        assertTrue(validator.isGitHubUsername("стивен пупкин"));
 
-        assertTrue(validator.isReadableName("stiven pupkin"));
+        assertTrue(validator.isGitHubUsername("stiven pupkin"));
 
-        assertTrue(validator.isReadableName("ABCDEFGHIJKLMNOPQRSTUVQXYZ abcdefghijklmnopqrstuvqxyz"));
+        assertTrue(validator.isGitHubUsername("ABCDEFGHIJKLMNOPQRSTUVQXYZ abcdefghijklmnopqrstuvqxyz"));
 
-        assertTrue(validator.isReadableName("abcdefghijklmnopqrstuvqxyz ABCDEFGHIJKLMNOPQRSTUVQXYZ"));
+        assertTrue(validator.isGitHubUsername("abcdefghijklmnopqrstuvqxyz ABCDEFGHIJKLMNOPQRSTUVQXYZ"));
 
-        assertTrue(validator.isReadableName("абвгдеёжзийклмо НПРСТУФХЧЦЬЫЪЭЮЯ"));
+        assertTrue(validator.isGitHubUsername("абвгдеёжзийклмо НПРСТУФХЧЦЬЫЪЭЮЯ"));
 
-        assertTrue(validator.isReadableName("нпрстуфхчцьыъэюя АБВГДЕЁЖЗИЙКЛМО"));
+        assertTrue(validator.isGitHubUsername("нпрстуфхчцьыъэюя АБВГДЕЁЖЗИЙКЛМО"));
 
-        assertTrue(validator.isReadableName("АБВГДЕЁЖЗИЙКЛМО нпрстуфхчцьыъэюя"));
+        assertTrue(validator.isGitHubUsername("АБВГДЕЁЖЗИЙКЛМО нпрстуфхчцьыъэюя"));
 
-        assertTrue(validator.isReadableName("НПРСТУФХЧЦЬЫЪЭЮЯ абвгдеёжзийклмо"));
+        assertTrue(validator.isGitHubUsername("НПРСТУФХЧЦЬЫЪЭЮЯ абвгдеёжзийклмо"));
 
-        assertTrue(validator.isReadableName("ҐґІіІіЄє ҐґІіІіЄє"));
+        assertTrue(validator.isGitHubUsername("ҐґІіІіЄє ҐґІіІіЄє"));
 
         assertFalse("Player name is invalid (should be 'Name Surname'): 'Стивен'",
-                validator.isReadableName("Стивен"));
+                validator.isGitHubUsername("Стивен"));
 
         assertFalse("Player name is invalid (should be 'Name Surname'): 'Я Д'Артаньян'",
-                validator.isReadableName("Я Д'Артаньян"));
+                validator.isGitHubUsername("Я Д'Артаньян"));
 
         assertFalse("Player name is invalid (should be 'Name Surname'): 'Дефис-нельзя'",
-                validator.isReadableName("Дефис-нельзя"));
+                validator.isGitHubUsername("Дефис-нельзя"));
 
         assertFalse("Player name is invalid (should be 'Name Surname'): 'Двапробела  нельзя'",
-                validator.isReadableName("Двапробела  нельзя"));
+                validator.isGitHubUsername("Двапробела  нельзя"));
 
         assertFalse("Player name is invalid (should be 'Name Surname'): 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaa'",
-                validator.isReadableName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaa"));
+                validator.isGitHubUsername("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaa"));
 
         assertFalse("Player name is invalid (should be 'Name Surname'): 'email#&*^#gmail%#&^*com'",
-                validator.isReadableName("email#&*^#gmail%#&^*com"));
+                validator.isGitHubUsername("email#&*^#gmail%#&^*com"));
 
         assertFalse("Player name is invalid (should be 'Name Surname'): 'null'",
-                validator.isReadableName(null));
+                validator.isGitHubUsername(null));
 
         assertFalse("Player name is invalid (should be 'Name Surname'): 'NuLL'",
-                validator.isReadableName("NuLL"));
+                validator.isGitHubUsername("NuLL"));
 
         assertFalse("Player name is invalid (should be 'Name Surname'): ''",
-                validator.isReadableName(""));
+                validator.isGitHubUsername(""));
 
         assertFalse("Player name is invalid (should be 'Name Surname'): 'null'",
-                validator.isReadableName(null));
+                validator.isGitHubUsername(null));
     }
 
     @Test

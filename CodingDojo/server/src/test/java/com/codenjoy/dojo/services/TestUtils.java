@@ -93,7 +93,7 @@ public class TestUtils {
 
     public static void assertUsersEqual(Registration.User expected, Registration.User actual, String originPassword, PasswordEncoder passwordEncoder) {
         Assert.assertEquals("User ids mismatch", expected.getId(), actual.getId());
-        Assert.assertEquals("User readable names mismatch", expected.getReadableName(), actual.getReadableName());
+        Assert.assertEquals("User readable names mismatch", expected.getGithubUsername(), actual.getGithubUsername());
         Assert.assertEquals("User emails approval statuses mismatch", expected.getApproved(), actual.getApproved());
         Assert.assertEquals("User emails approval statuses mismatch", expected.getApproved(), actual.getApproved());
         Assert.assertEquals("User codes mismatch", expected.getCode(), actual.getCode());

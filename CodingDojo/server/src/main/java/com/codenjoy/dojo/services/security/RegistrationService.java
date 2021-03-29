@@ -55,6 +55,7 @@ import static com.codenjoy.dojo.web.controller.Validator.CAN_BE_NULL;
 @Service
 @AllArgsConstructor
 public class RegistrationService {
+    public static final String DEFAULT_REPOSITORY_URL = "https://github.com";
 
     private MailService mailService;
     private LinkService linkService;
@@ -74,7 +75,7 @@ public class RegistrationService {
 
         String id = player.getId();
         String email = player.getEmail();
-        String name = player.getReadableName();
+        String name = player.getGithubUsername();
         String game = player.getGame();
         validator.checkPlayerId(id, CANT_BE_NULL);
         validator.checkEmail(email, CANT_BE_NULL);
@@ -96,7 +97,7 @@ public class RegistrationService {
                 if (!playerService.isRegistrationOpened()) {
                     return openRegistrationForm(request, model, id, email, name);
                 }
-                Registration.User user = registration.register(id, player.getEmail(), player.getReadableName(), player.getPassword(), player.getData(), GameAuthorities.USER.roles());
+                Registration.User user = registration.register(id, player.getEmail(), player.getGithubUsername(), player.getPassword(), player.getData(), GameAuthorities.USER.roles());
                 code = user.getCode();
             } else {
                 code = registration.getCodeById(id);
@@ -109,7 +110,6 @@ public class RegistrationService {
                     map.put("name", id);
                     map.put("code", code);
                     map.put("game", game);
-                    map.put("ip", getIp(request));
 
                     String hostIp = properties.getServerIp(); // TODO to use server domain here
                     map.put("host", hostIp);
@@ -142,7 +142,7 @@ public class RegistrationService {
                 model.addAttribute("bad_pass", true);
                 return openRegistrationForm(request, model, id, email, name);
             }
-            return connectRegisteredPlayer(player.getCode(), request, id, room, game);
+            return connectRegisteredPlayer(player.getCode(), player.getGithubUsername(), id, room, game);
         } else {
             model.addAttribute("wait_approve", true);
             return openRegistrationForm(request, model, id, email, name);
@@ -154,8 +154,8 @@ public class RegistrationService {
         mailService.sendEmail(id, title, body);
     }
 
-    public String connectRegisteredPlayer(String code, HttpServletRequest request, String id, String room, String game) {
-        return "redirect:/" + register(id, code, game, room, request.getRemoteAddr());
+    public String connectRegisteredPlayer(String code, String gitHubUsername, String id, String room, String game) {
+        return "redirect:/" + register(id, code, game, room, playerService.createRepository(gitHubUsername));
     }
 
     public String openRegistrationForm(HttpServletRequest request, Model model,
@@ -168,13 +168,12 @@ public class RegistrationService {
     public String openRegistrationForm(HttpServletRequest request, Model model,
                                                  String id,
                                                  String email,
-                                                 String name,
+                                                 String username,
                                                  boolean isAdminLogin) {
-        String ip = getIp(request);
 
         if (!StringUtils.isEmpty(id)) {
             email = registration.getEmailById(id);
-            name = registration.getNameById(id);
+            username = registration.getNameById(id);
             if (!model.containsAttribute("bad_email")) {
                 validator.checkEmail(email, CAN_BE_NULL);
             }
@@ -188,21 +187,21 @@ public class RegistrationService {
         Player player = new Player();
         player.setEmail(email);
         player.setId(id);
-        player.setReadableName(name);
+        player.setGithubUsername(username);
         player.setGame(rooms.getAlias(game));
         if (!model.containsAttribute("player")) {
             model.addAttribute("player", player);
         }
 
-        player.setCallbackUrl(ip);
+        player.setRepositoryUrl(DEFAULT_REPOSITORY_URL);
 
         model.addAttribute("adminLogin", isAdminLogin);
 
         return getRegister(model);
     }
 
-    public String register(String id, String code, String game, String room, String ip) {
-        Player player = playerService.register(id, game, room, ip);
+    public String register(String id, String code, String game, String room, String repositoryUrl) {
+        Player player = playerService.register(id, game, room, repositoryUrl);
         if (player == NullPlayer.INSTANCE) {
             return "login";
         }
@@ -216,16 +215,17 @@ public class RegistrationService {
         return "board/player/" + id + "?code=" + code + viewDelegationService.buildBoardParam(game);
     }
 
-    private String getIp(HttpServletRequest request) {
-        String result = request.getRemoteAddr();
-        if (result.equals("0:0:0:0:0:0:0:1")) {
-            result = "127.0.0.1";
-        }
-        if (result.equals("172.28.1.1")) {
-            result = request.getHeader("X-Real-IP");
-        }
-        return result;
-    }
+    //unnecessary
+//    private String getIp(HttpServletRequest request) {
+//        String result = request.getRemoteAddr();
+//        if (result.equals("0:0:0:0:0:0:0:1")) {
+//            result = "127.0.0.1";
+//        }
+//        if (result.equals("172.28.1.1")) {
+//            result = request.getHeader("X-Real-IP");
+//        }
+//        return result;
+//    }
 
     private String getRegister(Model model) {
         model.addAttribute("opened", playerService.isRegistrationOpened());

@@ -59,11 +59,11 @@ var boardPageLoad = function() {
     // ----------------------- init logger -------------------
     var logger = initLogger();
     logger.printCongrats = function() {
-        logger.print('Congrats ' + setup.readableName + '! You have passed the puzzle!!!');
+        logger.print('Congrats ' + setup.githubUsername + '! You have passed the puzzle!!!');
     }
 
     logger.printHello = function() {
-        logger.print('Hello ' + setup.readableName + ', I am Hero! Waiting for your command...');
+        logger.print('Hello ' + setup.githubUsername + ', I am Hero! Waiting for your command...');
     }
 
     // ----------------------- init slider -------------------

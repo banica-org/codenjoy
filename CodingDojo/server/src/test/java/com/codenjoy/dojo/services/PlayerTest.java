@@ -42,7 +42,7 @@ public class PlayerTest {
 
         assertEquals("vasia", player.toString());
 
-        assertEquals("http://valia:8888/", player.getCallbackUrl());
+        assertEquals("http://valia:8888/", player.getRepositoryUrl());
         assertEquals("vasia", player.getId());
         assertEquals(null, player.getPassword());
         assertNull(player.getCode());
@@ -52,8 +52,8 @@ public class PlayerTest {
         player.setId("katya");
         assertEquals("katya", player.getId());
 
-        player.setCallbackUrl("http://katya:8888/");
-        assertEquals("http://katya:8888/", player.getCallbackUrl());
+        player.setRepositoryUrl("http://katya:8888/");
+        assertEquals("http://katya:8888/", player.getRepositoryUrl());
 
         player.setPassword("passpass");
         assertNull(player.getCode());

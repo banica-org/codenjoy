@@ -231,7 +231,7 @@ public class RegistrationTest {
     }
 
     @Test
-    public void shouldUpdateReadableName() {
+    public void shouldUpdateGitHubUsername() {
         // given
         String code1 = registration.register("id1", "email1", "name1", "pass1", "someData1", USER.roles()).getCode();
         String code2 = registration.register("id2", "email2", "name2", "pass2", "someData2", USER.roles()).getCode();
@@ -246,11 +246,11 @@ public class RegistrationTest {
         assertUsersEqual(expectedUser2, actualUser2, "pass2", PASSWORD_ENCODER);
 
         // when
-        registration.updateReadableName("id1", "updatedName1");
+        registration.updateGitHubUsername("id1", "updatedName1");
         actualUser1 = registration.getUserByCode(code1);
 
         // then
-        assertUsersEqual(expectedUser1.setReadableName("updatedName1"), actualUser1, "pass1", PASSWORD_ENCODER);
+        assertUsersEqual(expectedUser1.setGithubUsername("updatedName1"), actualUser1, "pass1", PASSWORD_ENCODER);
         assertUsersEqual(expectedUser2, actualUser2, "pass2", PASSWORD_ENCODER);
     }
 
@@ -298,7 +298,7 @@ public class RegistrationTest {
         actualUser1 = registration.getUserByCode(code1);
 
         // then
-        assertUsersEqual(expectedUser1.setReadableName("updatedName1").setEmail("updatedEmail1"),
+        assertUsersEqual(expectedUser1.setGithubUsername("updatedName1").setEmail("updatedEmail1"),
                 actualUser1, "pass1", PASSWORD_ENCODER);
         assertUsersEqual(expectedUser2, actualUser2, "pass2", PASSWORD_ENCODER);
     }
@@ -480,11 +480,11 @@ public class RegistrationTest {
         // given
         String id = null;
         String email = "email";
-        String readableName = "name";
+        String githubUsername = "name";
         when(properties.isEmailVerificationNeeded()).thenReturn(true);
 
         // when
-        Registration.User user = registration.registerApproved(id, email, readableName);
+        Registration.User user = registration.registerApproved(id, email, githubUsername);
         
         // then
         assertEquals(false, StringUtils.isEmpty(user.getId()));
@@ -496,11 +496,11 @@ public class RegistrationTest {
         // given
         String id = "id";
         String email = "email";
-        String readableName = "name";
+        String githubUsername = "name";
         when(properties.isEmailVerificationNeeded()).thenReturn(true);
 
         // when
-        Registration.User user = registration.registerApproved(id, email, readableName);
+        Registration.User user = registration.registerApproved(id, email, githubUsername);
 
         // then
         assertEquals("id", user.getId());
@@ -512,26 +512,26 @@ public class RegistrationTest {
         // given
         String id = "id";
         String email = "email";
-        String readableName = "name";
+        String githubUsername = "name";
         when(properties.isEmailVerificationNeeded()).thenReturn(false);
 
         // when
-        Registration.User user = registration.registerApproved(id, email, readableName);
+        Registration.User user = registration.registerApproved(id, email, githubUsername);
 
         // then
         assertEquals("id", user.getId());
         assertUser("email", "name", 1, "{}", user);
     }
     
-    private void assertUser(String email, String readableName, int approved, String data, Registration.User user) {
+    private void assertUser(String email, String githubUsername, int approved, String data, Registration.User user) {
         assertEquals(email, user.getEmail());
         assertEquals(user.getId(), user.getName());
         assertEquals(false, StringUtils.isEmpty(user.getCode()));
-        assertEquals(readableName, user.getReadableName());
+        assertEquals(githubUsername, user.getGithubUsername());
         assertEquals(approved, user.getApproved());
         assertEquals(data, user.getData());
 
-        assertEquals(readableName, registration.getNameById(user.getId()));
+        assertEquals(githubUsername, registration.getNameById(user.getId()));
         assertEquals(user.getId(), registration.getIdByCode(user.getCode()));
     }
 

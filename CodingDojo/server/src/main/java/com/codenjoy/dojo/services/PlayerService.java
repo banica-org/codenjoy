@@ -23,12 +23,14 @@ package com.codenjoy.dojo.services;
  */
 
 
+import java.io.IOException;
 import java.util.List;
 
 public interface PlayerService extends Tickable {
 
     Player register(String id, String game, String room, String ip);
     Player register(PlayerSave save);
+    String createRepository(String username);
     List<Player> getAll();
     List<Player> getAll(String game);
     List<Player> getAllInRoom(String room);

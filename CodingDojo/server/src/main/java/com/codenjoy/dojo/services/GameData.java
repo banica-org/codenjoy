@@ -39,7 +39,7 @@ public class GameData {
     private Map<String, Object> scores;
     private List<String> group;
     private Map<String, HeroData> coordinates;
-    private Map<String, String> readableNames;
+    private Map<String, String> githubUsernames;
 
     public JSONObject getScores() {
         return new JSONObject(scores);
@@ -49,7 +49,7 @@ public class GameData {
         JSONObject result = new JSONObject();
         result.put("coordinates", coordinates);
         result.put("group", group);
-        result.put("readableNames", readableNames);
+        result.put("githubUsernames", githubUsernames);
         return result;
     }
 }

@@ -63,14 +63,14 @@ public class Registration {
         initialScripts.add("CREATE TABLE IF NOT EXISTS users (" +
                 "email varchar(255), " +
                 "id varchar(255), " +
-                "readable_name varchar(255), " +
+                "github_username varchar(255), " +
                 "email_approved int, " +
                 "password varchar(255)," +
                 "code varchar(255)," +
                 "data varchar(255)," +
                 "roles varchar(255));");
         if (initAdminUser) {
-            initialScripts.add(String.format("INSERT INTO users (id, email, readable_name, email_approved, password, code, data, roles)" +
+            initialScripts.add(String.format("INSERT INTO users (id, email, github_username, email_approved, password, code, data, roles)" +
                     " select '%s', '%s', '%s', %s,  '%s', '%s', '{}', '%s, %s'" +
                     " where not exists (select 1 from users where id = '%s')",
                     ADMIN_USER_ID, adminEmail, "admin", APPROVED, adminPassword, "000000000000", ROLE_ADMIN, ROLE_USER,
@@ -108,20 +108,20 @@ public class Registration {
         return count > 0;
     }
 
-    public User getOrRegister(String id, String email, String readableName) {
+    public User getOrRegister(String id, String email, String githubUsername) {
         Registration.User result = getUserById(id)
                 .orElseGet(() -> getUserByEmail(email)
-                    .orElseGet(() -> registerApproved(id, email, readableName)));
+                    .orElseGet(() -> registerApproved(id, email, githubUsername)));
         return result;
     }
     
-    public User registerApproved(String id, String email, String readableName) {
+    public User registerApproved(String id, String email, String githubUsername) {
         if (StringUtils.isEmpty(id)) {
             id = Hash.getRandomId();
         }
         String password = passwordEncoder.encode(randomAlphanumeric(properties.getAutoGenPasswordLen()));
 
-        User user = register(id, email, readableName,
+        User user = register(id, email, githubUsername,
                 password, "{}", GameAuthorities.USER.roles());
 
         if (!properties.isEmailVerificationNeeded()) {
@@ -132,13 +132,13 @@ public class Registration {
         return user;
     }
 
-    public User register(String id, String email, String readableName, String password, String data, Collection<String> roles) {
+    public User register(String id, String email, String githubUsername, String password, String data, Collection<String> roles) {
         roles = roles.isEmpty() ? GameAuthorities.USER.roles() : roles;
         String code = Hash.getCode(id, password);
         password = passwordEncoder.encode(password);
         
-        pool.update("INSERT INTO users (id, email, readable_name, email_approved, password, code, data, roles) VALUES (?,?,?,?,?,?,?,?);",
-                new Object[]{id, email, readableName, NOT_APPROVED, password, code, data, GameAuthorities.joinRoles(roles)});
+        pool.update("INSERT INTO users (id, email, github_username, email_approved, password, code, data, roles) VALUES (?,?,?,?,?,?,?,?);",
+                new Object[]{id, email, githubUsername, NOT_APPROVED, password, code, data, GameAuthorities.joinRoles(roles)});
         
         return getUserByCode(code);
     }
@@ -201,7 +201,7 @@ public class Registration {
     }
 
     public boolean nameIsUsed(String name) {
-        return pool.select("SELECT count(*) AS total FROM users WHERE readable_name = ?;",
+        return pool.select("SELECT count(*) AS total FROM users WHERE github_username = ?;",
                 new Object[]{name},
                 rs -> exists(rs, " name " + name)
         );
@@ -215,7 +215,7 @@ public class Registration {
     }
 
     public String getIdByName(String name) {
-        return pool.select("SELECT id FROM users WHERE readable_name = ?;",
+        return pool.select("SELECT id FROM users WHERE github_username = ?;",
                 new Object[]{name},
                 rs -> rs.next() ? rs.getString("id") : null
         );
@@ -229,9 +229,9 @@ public class Registration {
     }
 
     public String getNameById(String id) {
-        return pool.select("SELECT readable_name FROM users WHERE id = ?;",
+        return pool.select("SELECT github_username FROM users WHERE id = ?;",
                 new Object[]{id},
-                rs -> rs.next() ? rs.getString("readable_name") : null
+                rs -> rs.next() ? rs.getString("github_username") : null
         );
     }
 
@@ -247,23 +247,23 @@ public class Registration {
                 new Object[]{APPROVED, code});
     }
 
-    public void updateReadableName(String id, String name) {
-        pool.update("UPDATE users SET readable_name = ? WHERE id = ?;",
+    public void updateGitHubUsername(String id, String name) {
+        pool.update("UPDATE users SET github_username = ? WHERE id = ?;",
                 new Object[]{name, id});
     }
 
     public void updateId(String name, String id) {
-        pool.update("UPDATE users SET id = ? WHERE readable_name = ?;",
+        pool.update("UPDATE users SET id = ? WHERE github_username = ?;",
                 new Object[]{id, name});
     }
 
     public void updateNameAndEmail(String id, String name, String email) {
-        pool.update("UPDATE users SET readable_name = ?, email = ? WHERE id = ?;",
+        pool.update("UPDATE users SET github_username = ?, email = ? WHERE id = ?;",
                 new Object[]{name, email, id});
     }
 
     @Data
-    @ToString(of = { "id", "email", "readableName", "approved", "code", "data" })
+    @ToString(of = { "id", "email", "githubUsername", "approved", "code", "data" })
     @EqualsAndHashCode(callSuper = true)
     @Accessors(chain = true)
     public static class User extends org.springframework.security.core.userdetails.User implements OAuth2User {
@@ -273,7 +273,7 @@ public class Registration {
 
         private String email;
         private String id;
-        private String readableName;
+        private String githubUsername;
         private int approved;
         private String code;
         private String data;
@@ -282,11 +282,11 @@ public class Registration {
             super("anonymous", "", Collections.emptyList());
         }
 
-        public User(String id, String email, String readableName, int approved, String password, String code, String data, Collection<String> roles) {
+        public User(String id, String email, String githubUsername, int approved, String password, String code, String data, Collection<String> roles) {
             super(email, password, GameAuthorities.toGranted(roles));
             this.id = id;
             this.email = email;
-            this.readableName = readableName;
+            this.githubUsername = githubUsername;
             this.approved = approved;
             this.code = code;
             this.data = data;
@@ -348,7 +348,7 @@ public class Registration {
         return new User(
                 rs.getString("id"),
                 rs.getString("email"),
-                rs.getString("readable_name"),
+                rs.getString("github_username"),
                 rs.getInt("email_approved"),
                 rs.getString("password"),
                 rs.getString("code"),
@@ -372,7 +372,7 @@ public class Registration {
         }
 
         Object[] parameters = {
-                user.getReadableName(),
+                user.getGithubUsername(),
                 user.getEmail(),
                 APPROVED,
                 password,
@@ -383,10 +383,10 @@ public class Registration {
         };
 
         if (getCodeById(user.getId()) == null) {
-            pool.update("INSERT INTO users (readable_name, email, email_approved, password, code, data, roles, id) VALUES (?,?,?,?,?,?,?,?);",
+            pool.update("INSERT INTO users (github_username, email, email_approved, password, code, data, roles, id) VALUES (?,?,?,?,?,?,?,?);",
                     parameters);
         } else {
-            pool.update("UPDATE users SET readable_name = ?, email = ?, email_approved = ?, password = ?, code = ?, data = ?, roles = ? WHERE id = ?;",
+            pool.update("UPDATE users SET github_username = ?, email = ?, email_approved = ?, password = ?, code = ?, data = ?, roles = ? WHERE id = ?;",
                     parameters);
         }
     }

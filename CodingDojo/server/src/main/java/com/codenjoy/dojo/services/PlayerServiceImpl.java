@@ -1,4 +1,3 @@
-
 package com.codenjoy.dojo.services;
 
 /*-
@@ -48,9 +47,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
@@ -61,32 +65,38 @@ import static com.codenjoy.dojo.services.PlayerGames.withRoom;
 @Slf4j
 public class PlayerServiceImpl implements PlayerService {
 
-    private ReadWriteLock lock = new ReentrantReadWriteLock(true);
-    private Map<Player, String> cacheBoards = new HashMap<>();
-
-    @Autowired protected PlayerGames playerGames;
-    @Autowired private PlayerGamesView playerGamesView;
-
+    @Autowired
+    protected PlayerGames playerGames;
     @Autowired
     @Qualifier("playerController")
     protected Controller playerController;
-
     @Autowired
     @Qualifier("screenController")
     protected Controller screenController;
-
-    @Autowired protected GameService gameService;
-    @Autowired protected AutoSaver autoSaver;
-    @Autowired protected GameSaver saver;
-    @Autowired protected Chat chat;
-    @Autowired protected ActionLogger actionLogger;
-    @Autowired protected Registration registration;
-    @Autowired protected ConfigProperties config;
-    @Autowired protected Semifinal semifinal;
-    @Autowired protected SimpleProfiler profiler;
-
+    @Autowired
+    protected GameService gameService;
+    @Autowired
+    protected AutoSaver autoSaver;
+    @Autowired
+    protected GameSaver saver;
+    @Autowired
+    protected Chat chat;
+    @Autowired
+    protected ActionLogger actionLogger;
+    @Autowired
+    protected Registration registration;
+    @Autowired
+    protected ConfigProperties config;
+    @Autowired
+    protected Semifinal semifinal;
+    @Autowired
+    protected SimpleProfiler profiler;
     @Value("${game.ai}")
     protected boolean isAiNeeded;
+    private ReadWriteLock lock = new ReentrantReadWriteLock(true);
+    private Map<Player, String> cacheBoards = new HashMap<>();
+    @Autowired
+    private PlayerGamesView playerGamesView;
 
     @PostConstruct
     public void init() {
@@ -105,7 +115,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player register(String id, String game, String room, String ip) {
+    public Player register(String id, String game, String room, String repositoryUrl) {
         lock.writeLock().lock();
         try {
             log.debug("Registered user {} in game {}", id, game);
@@ -122,11 +132,11 @@ public class PlayerServiceImpl implements PlayerService {
                     && game.equals(save.getGame())
                     && room.equals(save.getRoom())) // TODO ROOM test me
             {
-                save.setCallbackUrl(ip);
+                save.setRepositoryUrl(repositoryUrl);
             } else {
-                save = new PlayerSave(id, ip, game, room, 0, null);
+                save = new PlayerSave(id, repositoryUrl, game, room, 0, null);
             }
-            Player player = register(new PlayerSave(id, ip, game, room, save.getScore(), save.getSave()));
+            Player player = register(new PlayerSave(id, repositoryUrl, game, room, save.getScore(), save.getSave()));
 
             return player;
         } finally {
@@ -183,7 +193,7 @@ public class PlayerServiceImpl implements PlayerService {
         Closeable ai = createAI(id, code, game, room);
         if (ai != null) {
             Player player = getPlayer.get();
-            player.setReadableName(StringUtils.capitalize(game) + " SuperAI");
+            player.setGithubUsername(StringUtils.capitalize(game) + " SuperAI");
             player.setAi(ai);
         }
     }
@@ -197,6 +207,18 @@ public class PlayerServiceImpl implements PlayerService {
             lock.writeLock().unlock();
         }
     }
+
+    @Override
+    public String createRepository(String username) {
+        String hostUrl = "http://" + config.getGitHubHostName()
+                + ":" + config.getGitHubPort() + "/repository?username=" + username;
+        try {
+            return new RestTemplate().getForObject(hostUrl, String.class);
+        } catch (Exception e) {
+            return "Repository not found!";
+        }
+    }
+
 
     private Player justRegister(PlayerSave save) {
         String id = save.getId();
@@ -260,7 +282,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     private Player getPlayer(PlayerSave save, String game, String room) {
         String name = save.getId();
-        String callbackUrl = save.getCallbackUrl();
+        String repositoryUrl = save.getRepositoryUrl();
 
         GameType gameType = gameService.getGameType(game, room);
         Player player = getPlayer(name);
@@ -275,7 +297,7 @@ public class PlayerServiceImpl implements PlayerService {
             PlayerScores playerScores = gameType.getPlayerScores(save.getScore(), gameType.getSettings());
             InformationCollector listener = new InformationCollector(playerScores);
 
-            player = new Player(name, callbackUrl,
+            player = new Player(name, repositoryUrl,
                     gameType, playerScores, listener);
             player.setEventListener(listener);
 
@@ -284,7 +306,7 @@ public class PlayerServiceImpl implements PlayerService {
 
             player = playerGame.getPlayer();
 
-            player.setReadableName(registration.getNameById(player.getId()));
+            player.setGithubUsername(registration.getNameById(player.getId()));
 
             log.debug("Player {} starting new game {}", name, playerGame.getGame());
         } else {
@@ -330,7 +352,7 @@ public class PlayerServiceImpl implements PlayerService {
                 }
             } catch (Exception e) {
                 log.error("Unable to send control request to player " + player.getId() +
-                        " URL: " + player.getCallbackUrl(), e);
+                        " URL: " + player.getRepositoryUrl(), e);
             }
         }
         log.debug("tick().requestControls() {} players", requested);
@@ -374,7 +396,7 @@ public class PlayerServiceImpl implements PlayerService {
 
             } catch (Exception e) {
                 log.error("Unable to send screen updates to player " + player.getId() +
-                        " URL: " + player.getCallbackUrl(), e);
+                        " URL: " + player.getRepositoryUrl(), e);
                 e.printStackTrace();
             }
         }
@@ -455,7 +477,7 @@ public class PlayerServiceImpl implements PlayerService {
                 throw new IllegalArgumentException("Diff players count");
             }
 
-            for (int index = 0; index < playerGames.size(); index ++) {
+            for (int index = 0; index < playerGames.size(); index++) {
                 updatePlayer(playerGames.get(index), players.get(index));
             }
         } finally {
@@ -476,20 +498,20 @@ public class PlayerServiceImpl implements PlayerService {
     private void updatePlayer(PlayerGame playerGame, Player input) {
         Player updated = playerGame.getPlayer();
 
-        if (StringUtils.isNotEmpty(input.getCallbackUrl())) {
-            updated.setCallbackUrl(input.getCallbackUrl());
+        if (StringUtils.isNotEmpty(input.getRepositoryUrl())) {
+            updated.setRepositoryUrl(input.getRepositoryUrl());
         }
 
-        boolean updateReadableName = StringUtils.isNotEmpty(input.getReadableName());
-        if (updateReadableName) {
-            updated.setReadableName(input.getReadableName());
-            registration.updateReadableName(input.getId(), input.getReadableName());
+        boolean updateGitHubUsername = StringUtils.isNotEmpty(input.getGithubUsername());
+        if (updateGitHubUsername) {
+            updated.setGithubUsername(input.getGithubUsername());
+            registration.updateGitHubUsername(input.getId(), input.getGithubUsername());
         }
 
         boolean updateId = !playerGame.getPlayer().getId().equals(input.getId());
         if (updateId) {
             updated.setId(input.getId());
-            registration.updateId(input.getReadableName(), input.getId());
+            registration.updateId(input.getGithubUsername(), input.getId());
         }
 
         try {

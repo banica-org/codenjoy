@@ -54,7 +54,8 @@ public class Validator {
     private static final String MD5 = "^[A-Za-f0-9]{32}$";
     private static final String READABLE_NAME_LAT = "^[A-Za-z]{1,50}$";
     private static final String READABLE_NAME_CYR = "^[А-Яа-яЁёҐґІіІіЄє]{1,50}$";
-    private static final String NICK_NAME = "^[0-9A-Za-zА-Яа-яЁёҐґІіІіЄє ]{1,50}$";
+    //changed to work with github standards
+    private static final String NICK_NAME = "^[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}$";
 
     @Autowired protected Registration registration;
     @Autowired protected ConfigProperties properties;
@@ -63,8 +64,8 @@ public class Validator {
 
     private Pattern email;
     private Pattern id;
-    private Pattern readableNameLat;
-    private Pattern readableNameCyr;
+    private Pattern githubUsernameLat;
+    private Pattern githubUsernameCyr;
     private Pattern nickName;
     private Pattern game;
     private Pattern room;
@@ -74,8 +75,8 @@ public class Validator {
     public Validator() {
         email = Pattern.compile(EMAIL);
         id = Pattern.compile(ID);
-        readableNameLat = Pattern.compile(READABLE_NAME_LAT);
-        readableNameCyr = Pattern.compile(READABLE_NAME_CYR);
+        githubUsernameLat = Pattern.compile(READABLE_NAME_LAT);
+        githubUsernameCyr = Pattern.compile(READABLE_NAME_CYR);
         nickName = Pattern.compile(NICK_NAME);
         game = Pattern.compile(GAME);
         room = Pattern.compile(ROOM);
@@ -90,7 +91,7 @@ public class Validator {
         }
     }
 
-    public boolean isReadableName(String input) {
+    public boolean isGitHubUsername(String input) {
         boolean empty = isEmpty(input);
         if (empty || !isFullName(input)) {
             return false;
@@ -114,14 +115,14 @@ public class Validator {
         }
         String firstName = parts[0];
         String lastName = parts[1];
-        if (readableNameLat.matcher(firstName).matches()
-                && readableNameLat.matcher(lastName).matches())
+        if (githubUsernameLat.matcher(firstName).matches()
+                && githubUsernameLat.matcher(lastName).matches())
         {
             return true;
         }
 
-        if (readableNameCyr.matcher(firstName).matches()
-                && readableNameCyr.matcher(lastName).matches())
+        if (githubUsernameCyr.matcher(firstName).matches()
+                && githubUsernameCyr.matcher(lastName).matches())
         {
             return true;
         }

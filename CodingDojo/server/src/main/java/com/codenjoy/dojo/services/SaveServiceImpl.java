@@ -36,7 +36,7 @@ import static com.codenjoy.dojo.services.PlayerGames.withRoom;
 @Component("saveService")
 public class SaveServiceImpl implements SaveService {
 
-    public static final String DEFAULT_CALLBACK_URL = "127.0.0.1";
+    public static final String DEFAULT_REPOSITORY_URL = "https://github.com";
 
     @Autowired protected GameSaver saver;
     @Autowired protected PlayerService players;
@@ -112,19 +112,19 @@ public class SaveServiceImpl implements SaveService {
 
     /**
      * Метод для ручной загрузки player из save для заданной gameType / room.
-     * Из save если он существует, грузится только callbackUrl пользователя,
+     * Из save если он существует, грузится только repositoryUrl пользователя,
      * все остальное передается с параметрами.
      * TODO я не уверен, что оно тут надо, т.к. есть вероятно другие версии этого метода
      */
     @Override
     public void load(String id, String game, String room, String save) {
-        String ip = tryGetIpFromSave(id);
+        String ip = tryGetUrlFromSave(id);
         resetPlayer(id, new PlayerSave(id, ip, game, room, 0, save));
     }
 
-    private String tryGetIpFromSave(String id) {
+    private String tryGetUrlFromSave(String id) {
         PlayerSave save = saver.loadGame(id);
-        return (save == PlayerSave.NULL) ? DEFAULT_CALLBACK_URL : save.getCallbackUrl();
+        return (save == PlayerSave.NULL) ? DEFAULT_REPOSITORY_URL : save.getRepositoryUrl();
     }
 
     @Override
@@ -165,7 +165,7 @@ public class SaveServiceImpl implements SaveService {
         registration.getUserById(name)
                 .ifPresent((user) -> {
                     info.setCode(user.getCode());
-                    info.setReadableName(user.getReadableName());
+                    info.setGithubUsername(user.getGithubUsername());
                 });
     }
 

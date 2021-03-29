@@ -28,12 +28,12 @@ public class UserData {
 
     private String id;
     private String email;
-    private String readableName;
+    private String githubUsername;
 
     public UserData(Map<String, ?> map) {
         id = (String) map.get("player_id");
         email = (String) map.get("email");
-        readableName = (String) map.get("name");
+        githubUsername = (String) map.get("name");
     }
 
     public String id() {
@@ -44,7 +44,7 @@ public class UserData {
         return email;
     }
 
-    public String readableName() {
-        return readableName;
+    public String githubUsername() {
+        return githubUsername;
     }
 }

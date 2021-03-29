@@ -92,7 +92,7 @@ function initCanvasesGame(contextPath, players, allPlayersScreen,
         var templateData = [];
         playersList.forEach(function (player) {
             var id = player.id;
-            var name = player.readableName;
+            var name = player.githubUsername;
             var levelVisible = (allPlayersScreen || !enablePlayerInfoLevel) ? 'none' : 'block';
             var playerVisible  = (!enablePlayerInfo) ? 'none' : 'block';
             templateData.push({

@@ -37,10 +37,10 @@ function initCanvases(contextPath, players, allPlayersScreen,
     var images = {};
     loadCanvasesData(alphabet, spriteElements, onLoad);
     var reloading = false;
-    var readableNames = {};
+    var githubUsernames = {};
 
     function toName(id) {
-        return readableNames[id];
+        return githubUsernames[id];
     }
 
     function goToHomePage() {
@@ -135,7 +135,7 @@ function initCanvases(contextPath, players, allPlayersScreen,
         var templateData = [];
         playersList.forEach(function (player) {
             var id = player.id;
-            var name = player.readableName;
+            var name = player.githubUsername;
             var levelVisible = (allPlayersScreen || !enablePlayerInfoLevel) ? 'none' : 'block';
             var playerVisible  = (!enablePlayerInfo) ? 'none' : 'block';
             templateData.push({
@@ -550,7 +550,7 @@ function initCanvases(contextPath, players, allPlayersScreen,
                 var id = ids[index];
                 playersOnTop.push({
                     'id':id,
-                    'readableName':data[id].heroesData.readableNames[id]
+                    'githubUsername':data[id].heroesData.githubUsernames[id]
                 });
             }
 
@@ -587,7 +587,7 @@ function initCanvases(contextPath, players, allPlayersScreen,
 
         var canvas = canvases[playerId];
         canvas.boardSize = boardSize;
-        readableNames = data.heroesData.readableNames;
+        githubUsernames = data.heroesData.githubUsernames;
 
         drawBoard(getBoardDrawer(canvas, playerId, data, allPlayersScreen));
 

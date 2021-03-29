@@ -32,7 +32,7 @@ function validatePlayerRegistration(formId) {
             email: true,
             alphabet : true
         },
-        callbackUrl: {
+        repositoryUrl: {
             required: true,
             url: true
         }

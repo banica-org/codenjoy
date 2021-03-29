@@ -39,7 +39,7 @@ public class PUser {
 
     private String email;
     private String id;
-    private String readableName;
+    private String githubUsername;
     private int approved;
     private String code;
     private String data;
@@ -49,7 +49,7 @@ public class PUser {
     public PUser(Registration.User user) {
         email = user.getEmail();
         id = user.getId();
-        readableName = user.getReadableName();
+        githubUsername = user.getGithubUsername();
         approved = user.getApproved();
         code = user.getCode();
         data = user.getData();
@@ -61,7 +61,7 @@ public class PUser {
         return new Registration.User(
                 id,
                 email,
-                readableName,
+                githubUsername,
                 approved,
                 password,
                 code,

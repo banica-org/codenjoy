@@ -77,7 +77,7 @@ public class RegistrationValidatorTest {
         errors = makeErrors();
         player = new Player(){{
             setEmail("someuser@sample.org");
-            setReadableName("Readable Name");
+            setGithubUsername("Readable Name");
             setPassword("12345");
             setPasswordConfirmation("12345");
             setGame("dummy");
@@ -96,13 +96,13 @@ public class RegistrationValidatorTest {
     @Test
     public void shouldValidateNicknameStructure() {
         // given
-        player.setReadableName("Unreadablename");
+        player.setGithubUsername("Unreadablename");
 
         // when
         validator.validate(player, errors);
         
         // then
-        assertError(errors, "readableName", "registration.nickname.invalid");
+        assertError(errors, "githubUsername", "registration.nickname.invalid");
     }
 
     @Test
@@ -110,13 +110,13 @@ public class RegistrationValidatorTest {
         // given
         String nonUniqueName = "Nonunique Name";
         when(registration.nameIsUsed(nonUniqueName)).thenReturn(true);
-        player.setReadableName(nonUniqueName);
+        player.setGithubUsername(nonUniqueName);
 
         // when
         validator.validate(player, errors);
         
         // then
-        assertError(errors,"readableName", "registration.nickname.alreadyUsed");
+        assertError(errors,"githubUsername", "registration.nickname.alreadyUsed");
     }
 
     @Test

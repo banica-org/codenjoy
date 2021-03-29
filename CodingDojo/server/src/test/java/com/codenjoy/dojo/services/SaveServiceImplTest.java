@@ -94,7 +94,7 @@ public class SaveServiceImplTest {
         when(player.getGame()).thenReturn("game " + room);
         when(player.getRoom()).thenReturn(room);
         when(player.hasAi()).thenReturn(true);
-        when(player.getCallbackUrl()).thenReturn("http://" + id + ":1234");
+        when(player.getRepositoryUrl()).thenReturn("http://" + id + ":1234");
         when(player.getEventListener()).thenReturn(mock(InformationCollector.class));
         when(playerService.get(id)).thenReturn(player);
         players.add(player);
@@ -192,7 +192,7 @@ public class SaveServiceImplTest {
         ArgumentCaptor<PlayerSave> captor = ArgumentCaptor.forClass(PlayerSave.class);
         verify(playerService).register(captor.capture());
         PlayerSave actual = captor.getValue();
-        assertEquals("{'callbackUrl':'127.0.0.2'," +
+        assertEquals("{'repositoryUrl':'127.0.0.2'," +
                 "'game':'game'," +
                 "'id':'vasia'," +
                 "'room':'room'," +
@@ -218,7 +218,7 @@ public class SaveServiceImplTest {
         ArgumentCaptor<PlayerSave> captor = ArgumentCaptor.forClass(PlayerSave.class);
         verify(playerService).register(captor.capture());
         PlayerSave actual = captor.getValue();
-        assertEquals("{'callbackUrl':'" + SaveServiceImpl.DEFAULT_CALLBACK_URL + "'," +
+        assertEquals("{'repositoryUrl':'" + SaveServiceImpl.DEFAULT_REPOSITORY_URL + "'," +
                 "'game':'game'," +
                 "'id':'vasia'," +
                 "'room':'room'," +
@@ -246,7 +246,7 @@ public class SaveServiceImplTest {
         ArgumentCaptor<PlayerSave> captor = ArgumentCaptor.forClass(PlayerSave.class);
         verify(playerService).register(captor.capture());
         PlayerSave actual = captor.getValue();
-        assertEquals("{'callbackUrl':'127.0.0.2'," +
+        assertEquals("{'repositoryUrl':'127.0.0.2'," +
                 "'game':'game'," +
                 "'id':'vasia'," +
                 "'room':'room'," +
@@ -291,8 +291,8 @@ public class SaveServiceImplTest {
 
         assertEquals("active", active.getId());
         assertEquals("code_active", active.getCode());
-        assertEquals("readable_active", active.getReadableName());
-        assertEquals("http://active:1234", active.getCallbackUrl());
+        assertEquals("readable_active", active.getGithubUsername());
+        assertEquals("http://active:1234", active.getRepositoryUrl());
         assertEquals("game room", active.getGame());
         assertEquals("{\"data\":2}", active.getData());
         assertEquals(11, active.getScore());
@@ -303,8 +303,8 @@ public class SaveServiceImplTest {
 
         assertEquals("activeSaved", activeSaved.getId());
         assertEquals("code_activeSaved", activeSaved.getCode());
-        assertEquals("readable_activeSaved", activeSaved.getReadableName());
-        assertEquals("http://activeSaved:1234", activeSaved.getCallbackUrl());
+        assertEquals("readable_activeSaved", activeSaved.getGithubUsername());
+        assertEquals("http://activeSaved:1234", activeSaved.getRepositoryUrl());
         assertEquals("game room", activeSaved.getGame());
         assertEquals("{\"data\":1}", activeSaved.getData());
         assertEquals(10, activeSaved.getScore());
@@ -315,8 +315,8 @@ public class SaveServiceImplTest {
 
         assertEquals("saved", saved.getId());
         assertEquals("code_saved", saved.getCode());
-        assertEquals("readable_saved", saved.getReadableName());
-        assertEquals("http://saved:1234", saved.getCallbackUrl());
+        assertEquals("readable_saved", saved.getGithubUsername());
+        assertEquals("http://saved:1234", saved.getRepositoryUrl());
         assertEquals("saved game room", saved.getGame());
         assertNull(saved.getData());
         assertEquals(15, saved.getScore());
@@ -329,7 +329,7 @@ public class SaveServiceImplTest {
     private void createUser(String id) {
         Optional<Registration.User> user = Optional.of(new Registration.User() {{
             setCode("code_" + id);
-            setReadableName("readable_" + id);
+            setGithubUsername("readable_" + id);
         }});
 
         when(registration.getUserById(id)).thenReturn(user);

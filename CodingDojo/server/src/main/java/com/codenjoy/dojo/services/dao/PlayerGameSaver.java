@@ -40,7 +40,7 @@ public class PlayerGameSaver implements GameSaver {
                 "CREATE TABLE IF NOT EXISTS saves (" +
                         "time varchar(255), " +
                         "player_id varchar(255), " +
-                        "callback_url varchar(255)," +
+                        "repository_url varchar(255)," +
                         "room_name varchar(255)," +
                         "game_name varchar(255)," +
                         "score varchar(255)," +
@@ -51,14 +51,16 @@ public class PlayerGameSaver implements GameSaver {
         pool.removeDatabase();
     }
 
+    //TODO to make it create on first call after that update it
+
     @Override
     public void saveGame(Player player, String save, long time) {
         pool.update("INSERT INTO saves " +
-                        "(time, player_id, callback_url, room_name, game_name, score, save) " +
+                        "(time, player_id, repository_url, room_name, game_name, score, save) " +
                         "VALUES (?,?,?,?,?,?,?);",
                 new Object[]{JDBCTimeUtils.toString(new Date(time)),
                         player.getId(),
-                        player.getCallbackUrl(),
+                        player.getRepositoryUrl(),
                         player.getRoom(),
                         player.getGame(),
                         player.getScore(),
@@ -66,18 +68,33 @@ public class PlayerGameSaver implements GameSaver {
                 });
     }
 
+//    @Override
+//    public void saveGame(Player player, String save, long time) {
+//        pool.update("UPDATE saves " +
+//                        "SET time = ?, player_id = ?, repository_url = ?, room_name = ?, game_name = ?, score = ?, save = ?" +
+//                        "WHERE player_id = 'icnlno2o2kbluwwxrkgw'",
+//                new Object[]{JDBCTimeUtils.toString(new Date(time)),
+//                        player.getId(),
+//                        player.getRepositoryUrl(),
+//                        player.getRoom(),
+//                        player.getGame(),
+//                        player.getScore(),
+//                        save
+//                });
+//    }
+
     @Override
     public PlayerSave loadGame(String id) {
         return pool.select("SELECT * FROM saves WHERE player_id = ? ORDER BY time DESC LIMIT 1;",
                 new Object[]{id},
                 rs -> {
                     if (rs.next()) {
-                        String callbackUrl = rs.getString("callback_url");
+                        String repositoryUrl = rs.getString("repository_url");
                         String score = rs.getString("score");
                         String room = rs.getString("room_name");
                         String game = rs.getString("game_name");
                         String save = rs.getString("save");
-                        return new PlayerSave(id, callbackUrl, game, room, score, save);
+                        return new PlayerSave(id, repositoryUrl, game, room, score, save);
                     } else {
                         return PlayerSave.NULL;
                     }

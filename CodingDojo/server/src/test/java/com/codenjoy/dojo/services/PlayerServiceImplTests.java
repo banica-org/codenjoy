@@ -1,10 +1,10 @@
-package com.codenjoy.dojo.web.rest.pojo;
+package com.codenjoy.dojo.services;
 
 /*-
  * #%L
  * Codenjoy - it's a dojo-like platform from developers to developers.
  * %%
- * Copyright (C) 2018 - 2019 Codenjoy
+ * Copyright (C) 2018 - 2021 Codenjoy
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -22,24 +22,30 @@ package com.codenjoy.dojo.web.rest.pojo;
  * #L%
  */
 
-import com.codenjoy.dojo.services.PlayerGame;
-import lombok.AllArgsConstructor;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@AllArgsConstructor
-public class PScoresOf {
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-    private PlayerGame playerGame;
+@RunWith(SpringRunner.class)
+public class PlayerServiceImplTests {
 
-    public String getId() {
-        return playerGame.getPlayer().getId();
+    @InjectMocks
+    PlayerServiceImpl playerService;
+
+    @Mock
+    ConfigProperties config;
+
+
+    @Test
+    public void createRepositoryTest() {
+        String username = "dummy-user";
+        playerService.createRepository(username);
+        verify(config, times(1)).getGitHubHostName();
+        verify(config, times(1)).getGitHubPort();
     }
-
-    public String getName() {
-        return playerGame.getPlayer().getGithubUsername();
-    }
-
-    public int getScore() {
-        return Integer.valueOf(playerGame.getPlayer().getScore().toString());
-    }
-
 }

@@ -48,7 +48,7 @@ function initRegistration(waitApprove, contextPath) {
         },
         userData: {
             email: "registration-email",
-            readableName: "registration-readableName",
+            githubUsername: "registration-githubUsername",
             data: "registration-data",
             data1: "registration-data1",
             data2: "registration-data2",
@@ -88,7 +88,7 @@ function initRegistration(waitApprove, contextPath) {
 
             // will display in fillFormFromLocalStorage
             // display('#gameType', data.showGames);
-            display('#readableName', data.showNames);
+            display('#githubUsername', data.showNames);
             display('#data1', data.showData1);
             display('#data2', data.showData2);
             display('#data3', data.showData3);
@@ -139,7 +139,7 @@ function initRegistration(waitApprove, contextPath) {
             };
         };
 
-        configurable('readableName');
+        configurable('githubUsername');
         configurable('data1');
         configurable('data2');
         configurable('data3');
@@ -176,7 +176,7 @@ function initRegistration(waitApprove, contextPath) {
         };
 
         $('#email').checkAndTriggerAutoFillEvent();
-        $('#readableName').checkAndTriggerAutoFillEvent();
+        $('#githubUsername').checkAndTriggerAutoFillEvent();
         $('#password').checkAndTriggerAutoFillEvent();
 
         for (var index in checkEls) {
@@ -212,7 +212,7 @@ function initRegistration(waitApprove, contextPath) {
         };
 
         $('#submit-button').click(submitForm);
-        $('#email, #password, #game, #gameType, #skills, #readableName, #data1, #data2, #data3, #data4').keypress(function (e) {
+        $('#email, #password, #game, #gameType, #skills, #githubUsername, #data1, #data2, #data3, #data4').keypress(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (code == 13) {
                 submitForm();
@@ -295,7 +295,7 @@ function initRegistration(waitApprove, contextPath) {
             loadGameTypeSelect(KEYS.game.type, '#gameType', data.defaultGame);
         });
         loadInput(KEYS.userData.email, '#email');
-        loadInput(KEYS.userData.readableName, '#readableName');
+        loadInput(KEYS.userData.githubUsername, '#githubUsername');
         loadInput(KEYS.userData.data1, '#data1');
         loadInput(KEYS.userData.data2, '#data2');
         loadInput(KEYS.userData.data3, '#data3');
@@ -306,7 +306,7 @@ function initRegistration(waitApprove, contextPath) {
         localStorage.setItem(KEYS.game.type, $('#gameType').find('option:selected').val());
         localStorage.setItem(KEYS.game.name, $('#game').find('option:selected').text());
         localStorage.setItem(KEYS.userData.email, $('#email input').val());
-        localStorage.setItem(KEYS.userData.readableName, $('#readableName input').val());
+        localStorage.setItem(KEYS.userData.githubUsername, $('#githubUsername input').val());
         localStorage.setItem(KEYS.userData.data1, $('#data1 input').val());
         localStorage.setItem(KEYS.userData.data2, $('#data2 input').val());
         localStorage.setItem(KEYS.userData.data3, $('#data3 input').val());

@@ -40,7 +40,7 @@ pages.boardLog = function() {
     setup.game = getSettings('game');
     setup.room = getSettings('room');
     setup.playerId = getSettings('playerId');
-    setup.readableName = getSettings('readableName');
+    setup.githubUsername = getSettings('githubUsername');
     setup.contextPath = getSettings('contextPath');
     setup.code = null;
     setup.allPlayersScreen = false;
@@ -113,7 +113,7 @@ function initLogs(game, boardSize, alphabet, playerId) {
 
         var data = {};
         var info = data[playerId] = {};
-        info.readableName = setup.readableName;
+        info.githubUsername = setup.githubUsername;
         info.score = tick.score;
         info.tickTime = time;
         info.command = tick.command;
@@ -125,8 +125,8 @@ function initLogs(game, boardSize, alphabet, playerId) {
         info.board = tick.board;
         info.info = "";
         info.heroesData = {};
-        info.heroesData.readableNames = {};
-        info.heroesData.readableNames[playerId] = playerId;
+        info.heroesData.githubUsernames = {};
+        info.heroesData.githubUsernames[playerId] = playerId;
         info.heroesData.coordinates = {};
         var coordinates = info.heroesData.coordinates[playerId] = {};
         coordinates.coordinate = {x:-1, y:-1};

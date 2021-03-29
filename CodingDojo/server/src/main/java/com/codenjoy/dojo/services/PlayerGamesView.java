@@ -48,7 +48,7 @@ public class PlayerGamesView {
         Map<String, List<String>> groupsMap = getGroupsMap();
         Map<String, Object> scores = getScores();
         Map<String, HeroData> coordinates = getCoordinates();
-        Map<String, String> readableNames = getReadableNames();
+        Map<String, String> githubUsernames = getGithubUsernames();
 
         return service.all().stream()
                 .collect(toMap(
@@ -64,7 +64,7 @@ public class PlayerGamesView {
                                     filterByGroup(scores, group),
                                     group,
                                     filterByGroup(coordinates, group),
-                                    filterByGroup(readableNames, group));
+                                    filterByGroup(githubUsernames, group));
                         }));
     }
 
@@ -140,9 +140,9 @@ public class PlayerGamesView {
         return scoresFor(pg -> pg.getRoom().equals(room));
     }
 
-    public Map<String, String> getReadableNames() {
+    public Map<String, String> getGithubUsernames() {
         return service.all().stream()
                 .collect(toMap(pg -> pg.getPlayer().getId(),
-                        pg -> pg.getPlayer().getNotNullReadableName()));
+                        pg -> pg.getPlayer().getNotNullGitHubUsername()));
     }
 }

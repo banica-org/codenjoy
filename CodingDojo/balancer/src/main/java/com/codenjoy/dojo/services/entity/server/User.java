@@ -38,7 +38,7 @@ public class User {
     private String id;
     private String email;
     private String phone;
-    private String readableName;
+    private String githubUsername;
     private int approved;
     private String password;
     private String code;
@@ -51,7 +51,7 @@ public class User {
                 "id='" + id + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", readableName='" + readableName + '\'' +
+                ", githubUsername='" + githubUsername + '\'' +
                 ", approved=" + approved +
                 ", password='" + password + '\'' +
                 ", code='" + code + '\'' +

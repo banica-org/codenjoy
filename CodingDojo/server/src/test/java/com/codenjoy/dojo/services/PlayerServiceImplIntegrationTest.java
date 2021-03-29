@@ -242,7 +242,7 @@ public class PlayerServiceImplIntegrationTest {
 
         // обновили описание ребят
         List<PlayerInfo> infos = service.getAll().stream().map(player -> new PlayerInfo(player.getId() + "_updated",
-                player.getCode(), player.getCallbackUrl(), player.getGame())).collect(toList());
+                player.getCode(), player.getRepositoryUrl(), player.getGame())).collect(toList());
         service.updateAll(infos);
         assertEquals("[game1-super-ai_updated, " +
                 "player1_updated, player4_updated, player5_updated, " +

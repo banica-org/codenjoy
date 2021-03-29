@@ -45,7 +45,7 @@ if (typeof setup == 'undefined') {
     setup.demo = true;
     setup.code = 123;
     setup.playerId = 'userId';
-    setup.readableName = 'Stiven Pupkin';
+    setup.githubUsername = 'Stiven Pupkin';
     initLayout = function(setup, html, context, transformations, scripts, onLoad) {
         onLoad();
     }

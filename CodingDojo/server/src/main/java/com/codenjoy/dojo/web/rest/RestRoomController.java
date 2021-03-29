@@ -122,7 +122,7 @@ public class RestRoomController {
             return null;
         }
 
-        playerService.register(user.getId(), game, room, request.getRemoteAddr());
+        playerService.register(user.getId(), game, room, user.getGithubUsername());
 
         return new PlayerId(user);
     }
