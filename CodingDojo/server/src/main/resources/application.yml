@@ -93,7 +93,7 @@ logging:
       reflections: error
 github:
   host:
-    name: ${gameserver.host}
+    name: 'localhost'
     port: 8081
 grpc:
   server:
@@ -101,5 +101,5 @@ grpc:
   executor:
     pool.size: 5
   dojo:
-    host: ${dojoserver.host}
+    host: 'localhost'
     port: 9092
