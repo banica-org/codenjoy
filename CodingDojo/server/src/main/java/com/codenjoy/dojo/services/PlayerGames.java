@@ -468,4 +468,8 @@ public class PlayerGames implements Iterable<PlayerGame>, Tickable {
     public GameSaver getGameSaver() {
         return gameSaver;
     }
+
+    protected void setGameSaver(GameSaver gameSaver) {
+        this.gameSaver = gameSaver;
+    }
 }

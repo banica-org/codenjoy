@@ -47,6 +47,10 @@ public class PlayerGameSaver implements GameSaver {
     @Autowired
     private BoardService boardService;
 
+    protected void setBoardService(BoardService boardService) {
+        this.boardService = boardService;
+    }
+
     public PlayerGameSaver(ConnectionThreadPoolFactory factory) {
         pool = factory.create(
                 "CREATE TABLE IF NOT EXISTS saves (" +
